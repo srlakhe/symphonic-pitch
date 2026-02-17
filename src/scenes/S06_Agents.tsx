@@ -1,9 +1,7 @@
 import React from 'react';
-import { AbsoluteFill } from 'remotion';
+import { AbsoluteFill, useCurrentFrame, spring, useVideoConfig } from 'remotion';
 import { MockTerminal } from '../components/MockTerminal';
-import { AgentAvatar } from '../components/AgentAvatar';
-import { AnimatedText } from '../components/AnimatedText';
-import { C } from '../theme/constants';
+import { C, FONT, SPRING } from '../theme/constants';
 
 const codexLines = [
   'symphonic agent:codex',
@@ -26,64 +24,99 @@ const claudeLines = [
 ];
 
 export const S06_Agents: React.FC = () => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+
+  const titleProgress = spring({ frame: frame - 5, fps, config: SPRING.slow });
+
   return (
     <AbsoluteFill
       style={{
-        background: `linear-gradient(180deg, ${C.bg} 0%, #F5F3FF 100%)`,
+        backgroundColor: C.bg,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 30,
+        gap: 40,
       }}
     >
       {/* Title */}
-      <AnimatedText
-        text="Run Codex and Claude Code side by side"
-        delay={5}
-        fontSize={36}
-        color={C.text}
-        fontWeight={600}
-        style={{ textAlign: 'center', marginBottom: 10 }}
-      />
-
-      {/* Side-by-side terminals */}
       <div
         style={{
-          display: 'flex',
-          gap: 32,
-          alignItems: 'flex-start',
+          fontSize: 44,
+          fontWeight: 700,
+          fontFamily: FONT.display,
+          color: C.text,
+          letterSpacing: '-0.03em',
+          textAlign: 'center',
+          opacity: Math.min(titleProgress * 1.5, 1),
+          transform: `translateY(${(1 - Math.min(titleProgress, 1)) * 20}px)`,
         }}
       >
+        Run Codex and Claude Code side by side.
+      </div>
+
+      {/* Terminals */}
+      <div style={{ display: 'flex', gap: 24, alignItems: 'flex-start' }}>
         {/* Codex */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
-          <AgentAvatar
-            name="OpenAI Codex"
-            color={C.codex}
-            letter="X"
-            delay={10}
-            size={48}
-          />
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div
+              style={{
+                width: 28,
+                height: 28,
+                borderRadius: '50%',
+                backgroundColor: C.codex,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: 13,
+                fontWeight: 700,
+                color: '#FFF',
+                fontFamily: FONT.display,
+              }}
+            >
+              X
+            </div>
+            <span style={{ fontSize: 14, fontWeight: 600, color: C.codex, fontFamily: FONT.body }}>
+              Codex
+            </span>
+          </div>
           <MockTerminal
             title="Codex — rest-endpoints"
             lines={codexLines}
             startFrame={15}
             charsPerFrame={1.0}
             accentColor={C.codex}
-            width={680}
+            width={700}
             height={340}
           />
         </div>
 
         {/* Claude Code */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
-          <AgentAvatar
-            name="Claude Code"
-            color={C.claude}
-            letter="C"
-            delay={20}
-            size={48}
-          />
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div
+              style={{
+                width: 28,
+                height: 28,
+                borderRadius: '50%',
+                backgroundColor: C.claude,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: 13,
+                fontWeight: 700,
+                color: '#FFF',
+                fontFamily: FONT.display,
+              }}
+            >
+              C
+            </div>
+            <span style={{ fontSize: 14, fontWeight: 600, color: C.claude, fontFamily: FONT.body }}>
+              Claude Code
+            </span>
+          </div>
           <MockTerminal
             title="Claude Code — auth-middleware"
             lines={claudeLines}
@@ -91,7 +124,7 @@ export const S06_Agents: React.FC = () => {
             charsPerFrame={1.0}
             accentColor={C.claude}
             variant="light"
-            width={680}
+            width={700}
             height={340}
           />
         </div>

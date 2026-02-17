@@ -20,7 +20,7 @@ export const MockTerminal: React.FC<MockTerminalProps> = ({
   lines,
   startFrame = 0,
   charsPerFrame = 1.2,
-  accentColor = C.terminalPrompt,
+  accentColor = C.accent,
   width = 800,
   height = 400,
   variant = 'dark',
@@ -39,29 +39,25 @@ export const MockTerminal: React.FC<MockTerminalProps> = ({
   const entryProgress = spring({
     frame: frame - Math.max(0, startFrame - 10),
     fps,
-    config: SPRING.snappy,
+    config: SPRING.gentle,
   });
 
-  const isDark = variant === 'dark';
-  const bgColor = isDark ? C.terminal : '#FAFBFC';
-  const titleBarBg = isDark ? 'rgba(255,255,255,0.06)' : '#F0F1F3';
-  const titleColor = isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)';
-  const textColor = isDark ? C.terminalText : '#1A1D26';
-  const cursorColor = isDark ? C.terminalText : '#1A1D26';
-  const shadowColor = isDark ? 'rgba(0,0,0,0.4)' : 'rgba(0,0,0,0.12)';
+  const isLight = variant === 'light';
 
   return (
     <div
       style={{
         width,
         height,
-        backgroundColor: bgColor,
-        borderRadius: 12,
+        backgroundColor: isLight ? '#F5F5F7' : '#1D1D1F',
+        borderRadius: 16,
         overflow: 'hidden',
-        boxShadow: `0 20px 60px ${shadowColor}`,
-        border: isDark ? 'none' : '1px solid #E5E7EB',
-        opacity: Math.min(entryProgress, 1),
-        transform: `scale(${0.9 + entryProgress * 0.1})`,
+        border: `1px solid ${isLight ? 'rgba(0,0,0,0.10)' : 'rgba(255,255,255,0.08)'}`,
+        boxShadow: isLight
+          ? '0 20px 60px rgba(0,0,0,0.06)'
+          : '0 20px 60px rgba(0,0,0,0.15)',
+        opacity: Math.min(entryProgress * 1.5, 1),
+        transform: `scale(${0.92 + Math.min(entryProgress, 1) * 0.08}) translateY(${(1 - Math.min(entryProgress, 1)) * 20}px)`,
         display: 'flex',
         flexDirection: 'column',
         ...style,
@@ -71,56 +67,56 @@ export const MockTerminal: React.FC<MockTerminalProps> = ({
       <div
         style={{
           height: 36,
-          backgroundColor: titleBarBg,
+          backgroundColor: isLight ? 'rgba(0,0,0,0.03)' : 'rgba(255,255,255,0.03)',
           display: 'flex',
           alignItems: 'center',
           paddingLeft: 14,
-          paddingRight: 14,
           gap: 8,
-          flexShrink: 0,
+          borderBottom: `1px solid ${isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.06)'}`,
         }}
       >
-        <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: '#FF5F57' }} />
-        <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: '#FEBC2E' }} />
-        <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: '#28C840' }} />
-        <div
+        <div style={{ display: 'flex', gap: 6 }}>
+          <div style={{ width: 10, height: 10, borderRadius: '50%', backgroundColor: '#FF5F57', opacity: 0.8 }} />
+          <div style={{ width: 10, height: 10, borderRadius: '50%', backgroundColor: '#FEBC2E', opacity: 0.8 }} />
+          <div style={{ width: 10, height: 10, borderRadius: '50%', backgroundColor: '#28C840', opacity: 0.8 }} />
+        </div>
+        <span
           style={{
-            flex: 1,
-            textAlign: 'center',
-            fontSize: 12,
-            color: titleColor,
-            fontFamily: FONT.ui,
+            fontSize: 11,
+            fontFamily: FONT.body,
+            color: isLight ? 'rgba(0,0,0,0.35)' : 'rgba(255,255,255,0.35)',
+            marginLeft: 4,
           }}
         >
           {title}
-        </div>
+        </span>
       </div>
 
-      {/* Terminal content */}
+      {/* Content */}
       <div
         style={{
           flex: 1,
-          padding: 16,
+          padding: '12px 16px',
           fontFamily: FONT.mono,
-          fontSize: 14,
-          color: textColor,
+          fontSize: 12,
           lineHeight: 1.7,
+          color: isLight ? '#1D1D1F' : '#E5E5E5',
           whiteSpace: 'pre-wrap',
           overflow: 'hidden',
         }}
       >
-        <span style={{ color: accentColor }}>❯ </span>
+        <span style={{ color: accentColor, opacity: 0.8 }}>❯ </span>
         {displayText}
         {showCursor && (
           <span
             style={{
               display: 'inline-block',
-              width: 8,
-              height: 16,
-              backgroundColor: cursorColor,
-              marginLeft: 1,
+              width: 2,
+              height: 14,
+              backgroundColor: accentColor,
+              marginLeft: 2,
               verticalAlign: 'text-bottom',
-              opacity: Math.floor(frame / 15) % 2 === 0 ? 1 : 0,
+              opacity: Math.floor(frame / 15) % 2 === 0 ? 0.9 : 0,
             }}
           />
         )}

@@ -7,12 +7,21 @@ export const S04_AppOverview: React.FC = () => {
   return (
     <AbsoluteFill
       style={{
-        background: `linear-gradient(180deg, ${C.bg} 0%, #EEF0F4 100%)`,
+        backgroundColor: C.bgSubtle,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
       }}
     >
+      {/* Subtle radial glow behind the product */}
+      <div
+        style={{
+          position: 'absolute',
+          width: 1200,
+          height: 800,
+          background: `radial-gradient(ellipse at center, ${C.accentGlow} 0%, transparent 60%)`,
+        }}
+      />
       <MockAppUI startFrame={0} />
     </AbsoluteFill>
   );

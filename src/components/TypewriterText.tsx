@@ -19,11 +19,12 @@ export const TypewriterText: React.FC<TypewriterTextProps> = ({
   startFrame = 0,
   charsPerFrame = 0.8,
   fontSize = 40,
-  color = C.textOnDark,
-  fontFamily = FONT.mono,
+  color = C.text,
+  fontFamily = FONT.display,
   cursor = true,
   style,
 }) => {
+  const frame = useCurrentFrame();
   const { displayText, showCursor } = useTypewriter({
     text,
     startFrame,
@@ -37,7 +38,8 @@ export const TypewriterText: React.FC<TypewriterTextProps> = ({
         fontSize,
         fontFamily,
         color,
-        lineHeight: 1.5,
+        lineHeight: 1.2,
+        letterSpacing: '-0.02em',
         whiteSpace: 'pre-wrap',
         ...style,
       }}
@@ -47,12 +49,11 @@ export const TypewriterText: React.FC<TypewriterTextProps> = ({
         <span
           style={{
             display: 'inline-block',
-            width: fontSize * 0.55,
-            height: fontSize * 1.1,
-            backgroundColor: color,
-            marginLeft: 2,
+            width: 3,
+            height: fontSize * 0.85,
+            backgroundColor: C.accent,
+            marginLeft: 4,
             verticalAlign: 'text-bottom',
-            opacity: 0.8,
           }}
         />
       )}

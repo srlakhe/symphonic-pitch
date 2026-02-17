@@ -15,7 +15,7 @@ import { S10_EndCard } from './scenes/S10_EndCard';
 
 export const Video: React.FC = () => {
   return (
-    <AbsoluteFill style={{ backgroundColor: '#0F1117' }}>
+    <AbsoluteFill style={{ backgroundColor: '#FFFFFF' }}>
       <Sequence from={SCENES.S01.from} durationInFrames={SCENES.S01.duration} name="S01 — Hook">
         <S01_Hook />
       </Sequence>

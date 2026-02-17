@@ -56,8 +56,8 @@ export const AgentAvatar: React.FC<AgentAvatarProps> = ({
           color: '#FFF',
           fontSize: size * 0.4,
           fontWeight: 700,
-          fontFamily: FONT.ui,
-          boxShadow: `0 0 30px ${color}44`,
+          fontFamily: FONT.display,
+          boxShadow: `0 0 30px ${color}22`,
         }}
       >
         {letter}
@@ -66,7 +66,7 @@ export const AgentAvatar: React.FC<AgentAvatarProps> = ({
         style={{
           fontSize: 14,
           fontWeight: 500,
-          fontFamily: FONT.ui,
+          fontFamily: FONT.body,
           color: color,
         }}
       >

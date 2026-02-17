@@ -10,6 +10,7 @@ interface AnimatedTextProps {
   fontWeight?: number;
   fontFamily?: string;
   springConfig?: typeof SPRING.snappy;
+  letterSpacing?: number;
   style?: React.CSSProperties;
 }
 
@@ -18,9 +19,10 @@ export const AnimatedText: React.FC<AnimatedTextProps> = ({
   delay = 0,
   fontSize = 48,
   color = '#FFFFFF',
-  fontWeight = 600,
-  fontFamily = FONT.ui,
-  springConfig = SPRING.snappy,
+  fontWeight = 700,
+  fontFamily = FONT.display,
+  springConfig = SPRING.gentle,
+  letterSpacing = -0.02,
   style,
 }) => {
   const frame = useCurrentFrame();
@@ -32,8 +34,8 @@ export const AnimatedText: React.FC<AnimatedTextProps> = ({
     config: springConfig,
   });
 
-  const opacity = Math.min(progress, 1);
-  const translateY = (1 - progress) * 30;
+  const opacity = Math.min(progress * 1.5, 1);
+  const translateY = (1 - Math.min(progress, 1)) * 40;
 
   return (
     <div
@@ -44,7 +46,8 @@ export const AnimatedText: React.FC<AnimatedTextProps> = ({
         color,
         opacity,
         transform: `translateY(${translateY}px)`,
-        lineHeight: 1.3,
+        lineHeight: 1.1,
+        letterSpacing: `${letterSpacing}em`,
         ...style,
       }}
     >

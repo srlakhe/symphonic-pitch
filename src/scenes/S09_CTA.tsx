@@ -7,26 +7,22 @@ import {
 } from 'remotion';
 import { TypewriterText } from '../components/TypewriterText';
 import { AnimatedText } from '../components/AnimatedText';
-import { ParticleField } from '../components/ParticleField';
 import { C, FONT, SPRING } from '../theme/constants';
 
 export const S09_CTA: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  // Glow button
   const btnProgress = spring({
     frame: frame - 90,
     fps,
     config: SPRING.bouncy,
   });
 
-  const glowPulse = Math.sin(frame * 0.08) * 0.3 + 0.7;
-
   return (
     <AbsoluteFill
       style={{
-        backgroundColor: C.bgDark,
+        backgroundColor: C.bg,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -34,16 +30,14 @@ export const S09_CTA: React.FC = () => {
         gap: 28,
       }}
     >
-      <ParticleField count={25} color="rgba(129,140,248,0.2)" />
-
       {/* Typewriter line */}
       <TypewriterText
         text="Build whatever you want."
         startFrame={10}
         charsPerFrame={1.2}
-        fontSize={48}
-        color={C.textOnDark}
-        fontFamily={FONT.ui}
+        fontSize={56}
+        color={C.textSecondary}
+        fontFamily={FONT.display}
         style={{ zIndex: 1, fontWeight: 300 }}
       />
 
@@ -51,8 +45,8 @@ export const S09_CTA: React.FC = () => {
       <AnimatedText
         text="Let your agents build it together."
         delay={55}
-        fontSize={52}
-        color={C.accentLight}
+        fontSize={60}
+        color={C.text}
         fontWeight={700}
         style={{ zIndex: 1 }}
       />
@@ -77,14 +71,14 @@ export const S09_CTA: React.FC = () => {
               width: 36,
               height: 36,
               borderRadius: 10,
-              background: `linear-gradient(135deg, ${C.accent}, ${C.accentLight})`,
+              background: `linear-gradient(135deg, ${C.accent}, #0A84FF)`,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: 20,
               fontWeight: 700,
               color: '#FFF',
-              fontFamily: FONT.ui,
+              fontFamily: FONT.display,
             }}
           >
             S
@@ -93,8 +87,8 @@ export const S09_CTA: React.FC = () => {
             style={{
               fontSize: 28,
               fontWeight: 600,
-              color: C.textOnDark,
-              fontFamily: FONT.ui,
+              color: C.text,
+              fontFamily: FONT.display,
             }}
           >
             Symphonic
@@ -106,12 +100,12 @@ export const S09_CTA: React.FC = () => {
           style={{
             padding: '16px 48px',
             borderRadius: 14,
-            background: `linear-gradient(135deg, ${C.accent}, ${C.accentLight})`,
+            background: `linear-gradient(135deg, ${C.accent}, #0A84FF)`,
             color: '#FFF',
-            fontFamily: FONT.ui,
+            fontFamily: FONT.body,
             fontSize: 20,
             fontWeight: 600,
-            boxShadow: `0 0 ${40 * glowPulse}px ${C.accent}88`,
+            boxShadow: `0 4px 20px ${C.accentGlow}`,
             display: 'flex',
             alignItems: 'center',
             gap: 8,

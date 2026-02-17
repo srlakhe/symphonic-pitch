@@ -7,108 +7,82 @@ import {
   interpolate,
 } from 'remotion';
 import { C, FONT, SPRING } from '../theme/constants';
-import { GlowBadge } from '../components/GlowBadge';
-import { AnimatedText } from '../components/AnimatedText';
 
 const branches = [
-  { name: 'feat/api', color: C.codex, y: -80, agent: 'Codex' },
-  { name: 'feat/auth', color: C.claude, y: 0, agent: 'Claude' },
-  { name: 'feat/tests', color: C.claude, y: 80, agent: 'Claude' },
+  { name: 'feat/api', color: C.codex, yOffset: -90, agent: 'Codex' },
+  { name: 'feat/auth', color: C.claude, yOffset: 0, agent: 'Claude' },
+  { name: 'feat/tests', color: C.claude, yOffset: 90, agent: 'Claude' },
 ];
 
 export const S05_Worktrees: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  // Branch line drawing animation
   const lineProgress = interpolate(frame, [15, 60], [0, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
 
+  const titleProgress = spring({ frame: frame - 5, fps, config: SPRING.slow });
+  const headingProgress = spring({ frame: frame - 15, fps, config: SPRING.slow });
+
   return (
     <AbsoluteFill
       style={{
-        background: `linear-gradient(135deg, ${C.bg} 0%, #F0F0FF 100%)`,
+        backgroundColor: C.bg,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 120,
+        gap: 140,
       }}
     >
       {/* Left: Branch diagram */}
-      <div style={{ position: 'relative', width: 500, height: 400 }}>
-        {/* Main trunk */}
-        <svg
-          width="500"
-          height="400"
-          style={{ position: 'absolute', top: 0, left: 0 }}
-        >
-          {/* Main line */}
+      <div style={{ position: 'relative', width: 440, height: 380 }}>
+        <svg width="440" height="380" style={{ position: 'absolute', top: 0, left: 0 }}>
           <line
-            x1="80"
-            y1="50"
-            x2="80"
-            y2="350"
-            stroke={C.textMuted}
-            strokeWidth="3"
+            x1="60" y1="40" x2="60" y2="340"
+            stroke="rgba(0,0,0,0.10)"
+            strokeWidth="2"
             strokeDasharray={`${lineProgress * 300}`}
-            strokeDashoffset="0"
-            opacity={0.3}
           />
-
-          {/* Branch lines */}
           {branches.map((branch, i) => {
             const branchDelay = 25 + i * 15;
-            const branchProgress = interpolate(
-              frame,
-              [branchDelay, branchDelay + 30],
-              [0, 1],
-              { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
-            );
-            const startY = 120 + i * 80;
+            const bp = interpolate(frame, [branchDelay, branchDelay + 30], [0, 1], {
+              extrapolateLeft: 'clamp',
+              extrapolateRight: 'clamp',
+            });
+            const startY = 110 + i * 90;
 
             return (
               <g key={i}>
-                {/* Fork line */}
                 <path
-                  d={`M 80 ${startY} C 160 ${startY}, 160 ${startY + branch.y * 0.3}, 240 ${startY + branch.y * 0.3}`}
+                  d={`M 60 ${startY} C 140 ${startY}, 140 ${startY + branch.yOffset * 0.25}, 220 ${startY + branch.yOffset * 0.25}`}
                   fill="none"
                   stroke={branch.color}
-                  strokeWidth="2.5"
-                  strokeDasharray={`${branchProgress * 200}`}
-                  opacity={0.8}
+                  strokeWidth="2"
+                  strokeDasharray={`${bp * 200}`}
+                  opacity={0.7}
                 />
-                {/* Branch dot */}
-                <circle
-                  cx="80"
-                  cy={startY}
-                  r="6"
-                  fill={C.bg}
-                  stroke={branch.color}
-                  strokeWidth="2.5"
-                  opacity={branchProgress}
-                />
-                {/* Worktree node */}
+                <circle cx="60" cy={startY} r="5" fill={C.bg} stroke={branch.color} strokeWidth="2" opacity={bp} />
                 <rect
-                  x="240"
-                  y={startY + branch.y * 0.3 - 16}
-                  width={branchProgress * 160}
-                  height="32"
-                  rx="8"
-                  fill={`${branch.color}18`}
+                  x="220"
+                  y={startY + branch.yOffset * 0.25 - 14}
+                  width={bp * 140}
+                  height="28"
+                  rx="6"
+                  fill={`${branch.color}10`}
                   stroke={branch.color}
-                  strokeWidth="1.5"
-                  opacity={branchProgress}
+                  strokeWidth="1"
+                  opacity={bp}
                 />
-                {branchProgress > 0.5 && (
+                {bp > 0.5 && (
                   <text
-                    x="260"
-                    y={startY + branch.y * 0.3 + 5}
+                    x="236"
+                    y={startY + branch.yOffset * 0.25 + 4}
                     fontFamily={FONT.mono}
-                    fontSize="12"
+                    fontSize="11"
                     fill={branch.color}
-                    opacity={Math.min((branchProgress - 0.5) * 2, 1)}
+                    opacity={Math.min((bp - 0.5) * 2, 1)}
                   >
                     {branch.name}
                   </text>
@@ -116,49 +90,53 @@ export const S05_Worktrees: React.FC = () => {
               </g>
             );
           })}
-
-          {/* Main label */}
-          <text
-            x="60"
-            y="40"
-            fontFamily={FONT.mono}
-            fontSize="13"
-            fill={C.textMuted}
-            textAnchor="middle"
-            opacity={lineProgress}
-          >
+          <text x="50" y="30" fontFamily={FONT.mono} fontSize="11" fill={C.textTertiary} textAnchor="middle" opacity={lineProgress}>
             main
           </text>
         </svg>
       </div>
 
-      {/* Right: Feature text */}
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 20,
-          maxWidth: 500,
-        }}
-      >
-        <GlowBadge text="ISOLATION" delay={10} />
-
-        <AnimatedText
-          text="Each agent gets its own worktree"
-          delay={25}
-          fontSize={42}
-          color={C.text}
-          fontWeight={700}
-        />
-
-        <AnimatedText
-          text="No conflicts. No locks. Full git history. Agents work on separate branches in parallel."
-          delay={45}
-          fontSize={20}
-          color={C.textMuted}
-          fontWeight={400}
-          style={{ lineHeight: 1.6 }}
-        />
+      {/* Right: Text */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 20, maxWidth: 480 }}>
+        <div
+          style={{
+            fontSize: 14,
+            fontWeight: 600,
+            fontFamily: FONT.body,
+            color: C.accent,
+            textTransform: 'uppercase',
+            letterSpacing: '0.1em',
+            opacity: Math.min(titleProgress * 2, 1),
+          }}
+        >
+          Isolation
+        </div>
+        <div
+          style={{
+            fontSize: 52,
+            fontWeight: 700,
+            fontFamily: FONT.display,
+            color: C.text,
+            letterSpacing: '-0.03em',
+            lineHeight: 1.1,
+            opacity: Math.min(headingProgress * 1.5, 1),
+            transform: `translateY(${(1 - Math.min(headingProgress, 1)) * 20}px)`,
+          }}
+        >
+          Each agent gets its own worktree.
+        </div>
+        <div
+          style={{
+            fontSize: 20,
+            fontWeight: 400,
+            fontFamily: FONT.body,
+            color: C.textSecondary,
+            lineHeight: 1.6,
+            opacity: Math.min(headingProgress * 1.2, 1),
+          }}
+        >
+          No conflicts. No locks. Full git history. Agents work on separate branches in parallel.
+        </div>
       </div>
     </AbsoluteFill>
   );

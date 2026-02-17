@@ -22,9 +22,9 @@ export const S08_Montage: React.FC = () => {
   const steps = [
     { label: 'Session Created', icon: '📋', triggerFrame: 10 },
     { label: 'Agents Running', icon: '⚡', triggerFrame: 40 },
-    { label: 'Diff Reviewed', icon: '📝', triggerFrame: 70 },
-    { label: 'Changes Merged', icon: '🔀', triggerFrame: 100 },
-    { label: 'PR Opened', icon: '🚀', triggerFrame: 130 },
+    { label: 'Code Written', icon: '📝', triggerFrame: 70 },
+    { label: 'Auto-merged', icon: '🔀', triggerFrame: 100 },
+    { label: 'Shipped', icon: '🚀', triggerFrame: 130 },
   ];
 
   // Counter animation
@@ -36,12 +36,12 @@ export const S08_Montage: React.FC = () => {
   return (
     <AbsoluteFill
       style={{
-        background: `linear-gradient(180deg, ${C.bg} 0%, #F5F3FF 100%)`,
+        backgroundColor: C.bg,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 40,
+        gap: 48,
       }}
     >
       {/* Steps timeline */}
@@ -80,11 +80,11 @@ export const S08_Montage: React.FC = () => {
                     height: 56,
                     borderRadius: 16,
                     backgroundColor: isDone
-                      ? `${C.statusRunning}18`
+                      ? `${C.statusRunning}15`
                       : isActive
-                      ? `${C.accent}18`
-                      : C.sidebar,
-                    border: `2px solid ${
+                      ? `${C.accent}10`
+                      : C.cardBg,
+                    border: `1.5px solid ${
                       isDone ? C.statusRunning : isActive ? C.accent : C.cardBorder
                     }`,
                     display: 'flex',
@@ -97,10 +97,10 @@ export const S08_Montage: React.FC = () => {
                 </div>
                 <span
                   style={{
-                    fontFamily: FONT.ui,
+                    fontFamily: FONT.body,
                     fontSize: 13,
                     fontWeight: 500,
-                    color: isActive ? C.text : C.textMuted,
+                    color: isActive ? C.text : C.textTertiary,
                     whiteSpace: 'nowrap',
                   }}
                 >
@@ -117,7 +117,6 @@ export const S08_Montage: React.FC = () => {
                     marginLeft: -4,
                     marginRight: -4,
                     marginBottom: 30,
-                    transition: 'background-color 0.3s',
                   }}
                 />
               )}
@@ -130,9 +129,9 @@ export const S08_Montage: React.FC = () => {
       <div
         style={{
           width: 800,
-          height: 8,
-          backgroundColor: C.sidebar,
-          borderRadius: 4,
+          height: 6,
+          backgroundColor: C.cardBg,
+          borderRadius: 3,
           overflow: 'hidden',
         }}
       >
@@ -141,7 +140,7 @@ export const S08_Montage: React.FC = () => {
             width: `${progressPct}%`,
             height: '100%',
             background: `linear-gradient(90deg, ${C.accent}, ${C.statusRunning})`,
-            borderRadius: 4,
+            borderRadius: 3,
           }}
         />
       </div>
@@ -150,7 +149,7 @@ export const S08_Montage: React.FC = () => {
       <div
         style={{
           display: 'flex',
-          gap: 48,
+          gap: 60,
           opacity: counterProgress,
           transform: `translateY(${(1 - counterProgress) * 20}px)`,
         }}
@@ -171,8 +170,8 @@ export const S08_Montage: React.FC = () => {
           >
             <span
               style={{
-                fontFamily: FONT.ui,
-                fontSize: 48,
+                fontFamily: FONT.display,
+                fontSize: 56,
                 fontWeight: 700,
                 color: C.accent,
               }}
@@ -181,9 +180,9 @@ export const S08_Montage: React.FC = () => {
             </span>
             <span
               style={{
-                fontFamily: FONT.ui,
+                fontFamily: FONT.body,
                 fontSize: 16,
-                color: C.textMuted,
+                color: C.textSecondary,
                 fontWeight: 500,
               }}
             >

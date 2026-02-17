@@ -1,49 +1,70 @@
-// ── Colors ───────────────────────────────────────────────────
+// ── Light Keynote Design System ──────────────────────────────
+// Clean whites. Massive type. One idea per frame.
+
 export const C = {
-  bg: '#FAFBFC',
-  bgDark: '#0F1117',
-  accent: '#4F46E5',
-  accentLight: '#818CF8',
+  // Backgrounds — crisp, bright
+  bg: '#FFFFFF',
+  bgSubtle: '#F5F5F7',
+  bgElevated: '#FFFFFF',
 
-  text: '#1A1D26',
-  textMuted: '#6B7280',
-  textOnDark: '#E5E7EB',
+  // Typography — dark on light
+  text: '#1D1D1F',
+  textSecondary: 'rgba(0,0,0,0.50)',
+  textTertiary: 'rgba(0,0,0,0.30)',
 
-  claude: '#C67A4A',
-  codex: '#1A7F37',
+  // Accent — used sparingly
+  accent: '#0071E3',            // Apple blue
+  accentGlow: 'rgba(0,113,227,0.12)',
 
-  statusRunning: '#22C55E',
-  statusPaused: '#F59E0B',
-  statusError: '#EF4444',
+  // Agent colors
+  codex: '#1A7F37',             // GitHub green
+  claude: '#DA7756',            // Warm terracotta
 
-  terminal: '#1E1E2E',
-  terminalText: '#A6E3A1',
-  terminalPrompt: '#89B4FA',
+  // Status
+  statusRunning: '#34C759',
+  statusPaused: '#FF9F0A',
+  statusError: '#FF3B30',
 
-  diffAdd: '#22C55E',
-  diffAddBg: 'rgba(34,197,94,0.12)',
-  diffRemove: '#EF4444',
-  diffRemoveBg: 'rgba(239,68,68,0.12)',
+  // Terminal
+  terminal: '#1D1D1F',
+  terminalText: '#E5E5E5',
+  terminalPrompt: '#0071E3',
+  terminalBorder: 'rgba(0,0,0,0.08)',
 
-  cardBg: '#FFFFFF',
-  cardBorder: '#E5E7EB',
-  sidebar: '#F3F4F6',
+  // Light terminal
+  terminalLight: '#F5F5F7',
+  terminalLightText: '#1D1D1F',
+  terminalLightBorder: 'rgba(0,0,0,0.10)',
+
+  // Diff
+  diffAdd: '#1A7F37',
+  diffAddBg: 'rgba(26,127,55,0.08)',
+  diffRemove: '#CF222E',
+  diffRemoveBg: 'rgba(207,34,46,0.06)',
+
+  // Surfaces
+  cardBg: '#F5F5F7',
+  cardBorder: 'rgba(0,0,0,0.08)',
+  separator: 'rgba(0,0,0,0.06)',
 } as const;
 
-// ── Fonts ────────────────────────────────────────────────────
+// ── Typography ──────────────────────────────────────────────
+// SF Pro Display feel — clean, confident, system-native
 export const FONT = {
-  ui: 'Inter, "DM Sans", system-ui, sans-serif',
-  mono: '"JetBrains Mono", "Fira Code", monospace',
+  display: '-apple-system, "SF Pro Display", "Helvetica Neue", system-ui, sans-serif',
+  body: '-apple-system, "SF Pro Text", "Helvetica Neue", system-ui, sans-serif',
+  mono: '"SF Mono", "Fira Code", "JetBrains Mono", monospace',
 } as const;
 
-// ── Spring Presets ───────────────────────────────────────────
+// ── Spring Presets ──────────────────────────────────────────
 export const SPRING = {
   snappy: { damping: 20, mass: 0.8, stiffness: 200 },
   bouncy: { damping: 12, mass: 0.6, stiffness: 180 },
   gentle: { damping: 30, mass: 1, stiffness: 120 },
+  slow: { damping: 40, mass: 1.2, stiffness: 80 },
 } as const;
 
-// ── Layout ───────────────────────────────────────────────────
+// ── Layout ──────────────────────────────────────────────────
 export const LAYOUT = {
   width: 1920,
   height: 1080,
@@ -51,16 +72,16 @@ export const LAYOUT = {
   totalFrames: 1560,
 } as const;
 
-// ── Scene timings (in frames) ────────────────────────────────
+// ── Scene timings (in frames) ───────────────────────────────
 export const SCENES = {
-  S01: { from: 0, duration: 120 },      // Hook: 0–4s
-  S02: { from: 120, duration: 150 },     // Problem: 4–9s
-  S03: { from: 270, duration: 120 },     // Logo Reveal: 9–13s
-  S04: { from: 390, duration: 210 },     // App Overview: 13–20s
-  S05: { from: 600, duration: 150 },     // Worktrees: 20–25s
-  S06: { from: 750, duration: 180 },     // Agents: 25–31s
-  S07: { from: 930, duration: 180 },     // Diff & Merge: 31–37s
-  S08: { from: 1110, duration: 180 },    // Montage: 37–43s
-  S09: { from: 1290, duration: 150 },    // CTA: 43–48s
-  S10: { from: 1440, duration: 120 },    // End Card: 48–52s
+  S01: { from: 0, duration: 120 },
+  S02: { from: 120, duration: 150 },
+  S03: { from: 270, duration: 120 },
+  S04: { from: 390, duration: 210 },
+  S05: { from: 600, duration: 150 },
+  S06: { from: 750, duration: 180 },
+  S07: { from: 930, duration: 180 },
+  S08: { from: 1110, duration: 180 },
+  S09: { from: 1290, duration: 150 },
+  S10: { from: 1440, duration: 120 },
 } as const;

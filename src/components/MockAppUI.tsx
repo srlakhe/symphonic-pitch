@@ -14,7 +14,7 @@ const sessions = [
   { name: 'Write API tests', agent: 'Claude Code', status: 'paused' as const, color: C.claude },
 ];
 
-const statusColor = {
+const statusColors = {
   running: C.statusRunning,
   completed: C.statusRunning,
   paused: C.statusPaused,
@@ -37,30 +37,20 @@ export const MockAppUI: React.FC<MockAppUIProps> = ({
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  // Overall fly-in
-  const flyIn = spring({
-    frame: frame - startFrame,
-    fps,
-    config: SPRING.gentle,
-  });
-
-  const scale = interpolate(flyIn, [0, 1], [0.85, 1]);
+  const flyIn = spring({ frame: frame - startFrame, fps, config: SPRING.slow });
+  const scale = interpolate(flyIn, [0, 1], [0.88, 1]);
   const opacity = Math.min(flyIn * 1.5, 1);
 
-  // Sequential panel highlights
-  const highlightPhase = Math.floor(
-    interpolate(frame - startFrame, [60, 180], [0, 3], {
-      extrapolateLeft: 'clamp',
-      extrapolateRight: 'clamp',
-    })
-  );
-
-  // Terminal typewriter
   const termText = terminalLines.join('\n');
   const { displayText, showCursor } = useTypewriter({
     text: termText,
-    startFrame: startFrame + 30,
+    startFrame: startFrame + 40,
     charsPerFrame: 1.5,
+  });
+
+  const diffSlide = interpolate(frame - startFrame, [110, 150], [200, 0], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
   });
 
   return (
@@ -68,10 +58,10 @@ export const MockAppUI: React.FC<MockAppUIProps> = ({
       style={{
         width: 1400,
         height: 800,
-        borderRadius: 16,
+        borderRadius: 20,
         overflow: 'hidden',
-        boxShadow: '0 30px 80px rgba(0,0,0,0.15)',
-        border: '1px solid rgba(0,0,0,0.08)',
+        border: `1px solid ${C.cardBorder}`,
+        boxShadow: `0 40px 120px rgba(0,0,0,0.10), 0 0 0 1px ${C.cardBorder}`,
         backgroundColor: C.bg,
         opacity,
         transform: `scale(${scale})`,
@@ -83,106 +73,79 @@ export const MockAppUI: React.FC<MockAppUIProps> = ({
       {/* Top Bar */}
       <div
         style={{
-          height: 48,
-          backgroundColor: C.cardBg,
-          borderBottom: `1px solid ${C.cardBorder}`,
+          height: 44,
+          backgroundColor: C.bgSubtle,
+          borderBottom: `1px solid ${C.separator}`,
           display: 'flex',
           alignItems: 'center',
-          paddingLeft: 20,
-          paddingRight: 20,
-          boxShadow: highlightPhase === 0 ? `0 0 0 2px ${C.accent}` : 'none',
-          transition: 'box-shadow 0.3s',
+          paddingLeft: 16,
+          paddingRight: 16,
         }}
       >
-        {/* App icon */}
+        <div style={{ display: 'flex', gap: 7, marginRight: 16 }}>
+          <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: '#FF5F57' }} />
+          <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: '#FEBC2E' }} />
+          <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: '#28C840' }} />
+        </div>
         <div
           style={{
             width: 28,
             height: 28,
-            borderRadius: 6,
-            background: `linear-gradient(135deg, ${C.accent}, ${C.accentLight})`,
-            marginRight: 10,
+            borderRadius: 7,
+            background: `linear-gradient(135deg, ${C.accent}, #0A84FF)`,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#FFF',
-            fontSize: 14,
-            fontWeight: 700,
-            fontFamily: FONT.ui,
+            marginRight: 8,
           }}
         >
-          S
+          <span style={{ fontSize: 14, fontWeight: 700, color: '#FFF', fontFamily: FONT.display }}>S</span>
         </div>
-        <span
-          style={{
-            fontFamily: FONT.ui,
-            fontWeight: 600,
-            fontSize: 15,
-            color: C.text,
-          }}
-        >
-          Symphonic
-        </span>
+        <span style={{ fontFamily: FONT.body, fontWeight: 600, fontSize: 13, color: C.text }}>Symphonic</span>
         <span
           style={{
             fontFamily: FONT.mono,
-            fontSize: 12,
-            color: C.textMuted,
-            marginLeft: 16,
-            backgroundColor: C.sidebar,
-            padding: '3px 10px',
+            fontSize: 11,
+            color: C.textTertiary,
+            marginLeft: 12,
+            padding: '2px 8px',
             borderRadius: 4,
+            backgroundColor: C.cardBg,
+            border: `1px solid ${C.cardBorder}`,
           }}
         >
           myorg/backend-api
         </span>
         <div style={{ flex: 1 }} />
-        <div
-          style={{
-            display: 'flex',
-            gap: 6,
-            alignItems: 'center',
-            fontSize: 12,
-            color: C.textMuted,
-            fontFamily: FONT.ui,
-          }}
-        >
-          <div
-            style={{
-              width: 8,
-              height: 8,
-              borderRadius: '50%',
-              backgroundColor: C.statusRunning,
-            }}
-          />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: C.textTertiary, fontFamily: FONT.body }}>
+          <div style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: C.statusRunning }} />
           2 agents active
         </div>
       </div>
 
-      {/* Main content */}
+      {/* Main */}
       <div style={{ flex: 1, display: 'flex' }}>
         {/* Sidebar */}
         <div
           style={{
-            width: 280,
-            backgroundColor: C.sidebar,
-            borderRight: `1px solid ${C.cardBorder}`,
-            padding: 12,
+            width: 260,
+            backgroundColor: C.bgSubtle,
+            borderRight: `1px solid ${C.separator}`,
+            padding: 10,
             display: 'flex',
             flexDirection: 'column',
-            gap: 8,
-            boxShadow: highlightPhase === 1 ? `inset 0 0 0 2px ${C.accent}` : 'none',
+            gap: 4,
           }}
         >
           <div
             style={{
-              fontSize: 11,
+              fontSize: 10,
               fontWeight: 600,
-              fontFamily: FONT.ui,
-              color: C.textMuted,
+              fontFamily: FONT.body,
+              color: C.textTertiary,
               textTransform: 'uppercase',
-              letterSpacing: 1,
-              padding: '4px 8px',
+              letterSpacing: '0.08em',
+              padding: '8px 8px 4px',
             }}
           >
             Sessions
@@ -191,109 +154,63 @@ export const MockAppUI: React.FC<MockAppUIProps> = ({
             <div
               key={i}
               style={{
-                backgroundColor: i === 0 ? C.cardBg : 'transparent',
+                backgroundColor: i === 0 ? C.bg : 'transparent',
                 borderRadius: 8,
-                padding: '10px 12px',
+                padding: '8px 10px',
                 border: i === 0 ? `1px solid ${C.cardBorder}` : '1px solid transparent',
               }}
             >
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 8,
-                  marginBottom: 4,
-                }}
-              >
-                <div
-                  style={{
-                    width: 8,
-                    height: 8,
-                    borderRadius: '50%',
-                    backgroundColor: statusColor[s.status],
-                  }}
-                />
-                <span
-                  style={{
-                    fontFamily: FONT.ui,
-                    fontSize: 13,
-                    fontWeight: 500,
-                    color: C.text,
-                  }}
-                >
-                  {s.name}
-                </span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 3 }}>
+                <div style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: statusColors[s.status] }} />
+                <span style={{ fontFamily: FONT.body, fontSize: 12, fontWeight: 500, color: C.text }}>{s.name}</span>
               </div>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 6,
-                  paddingLeft: 16,
-                }}
-              >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 5, paddingLeft: 13 }}>
                 <div
                   style={{
-                    width: 14,
-                    height: 14,
+                    width: 12,
+                    height: 12,
                     borderRadius: '50%',
                     backgroundColor: s.color,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontSize: 8,
+                    fontSize: 7,
                     color: '#FFF',
                     fontWeight: 700,
                   }}
                 >
-                  {s.agent === 'Claude Code' ? 'C' : 'X'}
+                  {s.agent === 'Codex' ? 'X' : 'C'}
                 </div>
-                <span
-                  style={{
-                    fontFamily: FONT.ui,
-                    fontSize: 11,
-                    color: C.textMuted,
-                  }}
-                >
-                  {s.agent}
-                </span>
+                <span style={{ fontFamily: FONT.body, fontSize: 10, color: C.textTertiary }}>{s.agent}</span>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Terminal + Diff area */}
+        {/* Terminal + Diff */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-          {/* Terminal */}
-          <div
-            style={{
-              flex: 1,
-              backgroundColor: C.terminal,
-              display: 'flex',
-              flexDirection: 'column',
-              boxShadow: highlightPhase === 2 ? `inset 0 0 0 2px ${C.accent}` : 'none',
-            }}
-          >
-            {/* Terminal tabs */}
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+            {/* Tabs */}
             <div
               style={{
-                height: 32,
-                backgroundColor: 'rgba(255,255,255,0.04)',
+                height: 30,
+                backgroundColor: C.bgSubtle,
                 display: 'flex',
                 alignItems: 'center',
                 paddingLeft: 12,
                 gap: 2,
+                borderBottom: `1px solid ${C.separator}`,
               }}
             >
               {['Agent: Codex', 'Agent: Claude Code'].map((tab, i) => (
                 <div
                   key={i}
                   style={{
-                    padding: '4px 14px',
-                    fontSize: 11,
-                    fontFamily: FONT.ui,
-                    color: i === 0 ? '#FFF' : 'rgba(255,255,255,0.4)',
-                    backgroundColor: i === 0 ? 'rgba(255,255,255,0.1)' : 'transparent',
+                    padding: '3px 12px',
+                    fontSize: 10,
+                    fontFamily: FONT.body,
+                    color: i === 0 ? C.text : C.textTertiary,
+                    backgroundColor: i === 0 ? C.bg : 'transparent',
                     borderRadius: '4px 4px 0 0',
                   }}
                 >
@@ -301,93 +218,71 @@ export const MockAppUI: React.FC<MockAppUIProps> = ({
                 </div>
               ))}
             </div>
-            {/* Terminal content */}
             <div
               style={{
                 flex: 1,
                 padding: 16,
                 fontFamily: FONT.mono,
-                fontSize: 12,
+                fontSize: 11,
                 lineHeight: 1.8,
-                color: C.terminalText,
+                color: C.terminal,
+                backgroundColor: '#1D1D1F',
                 whiteSpace: 'pre-wrap',
                 overflow: 'hidden',
               }}
             >
-              {displayText}
+              <span style={{ color: C.terminalText }}>
+                {displayText}
+              </span>
               {showCursor && (
                 <span
                   style={{
                     display: 'inline-block',
-                    width: 7,
-                    height: 14,
-                    backgroundColor: C.terminalText,
+                    width: 2,
+                    height: 13,
+                    backgroundColor: C.terminalPrompt,
                     marginLeft: 1,
                     verticalAlign: 'text-bottom',
-                    opacity: Math.floor(frame / 15) % 2 === 0 ? 1 : 0,
+                    opacity: Math.floor(frame / 15) % 2 === 0 ? 0.8 : 0,
                   }}
                 />
               )}
             </div>
           </div>
 
-          {/* Diff panel (slides up) */}
+          {/* Diff panel */}
           <div
             style={{
-              height: 200,
-              backgroundColor: '#1A1D26',
-              borderTop: '1px solid rgba(255,255,255,0.1)',
-              transform: `translateY(${interpolate(
-                frame - startFrame,
-                [100, 140],
-                [200, 0],
-                { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
-              )}px)`,
+              height: 180,
+              backgroundColor: C.bgSubtle,
+              borderTop: `1px solid ${C.separator}`,
+              transform: `translateY(${diffSlide}px)`,
               padding: 12,
               overflow: 'hidden',
             }}
           >
-            <div
-              style={{
-                fontSize: 11,
-                fontFamily: FONT.ui,
-                color: 'rgba(255,255,255,0.4)',
-                marginBottom: 8,
-              }}
-            >
-              Changes — src/middleware/auth.ts
+            <div style={{ fontSize: 10, fontFamily: FONT.body, color: C.textTertiary, marginBottom: 6 }}>
+              Changes — src/routes/users.ts
             </div>
             {[
-              { type: 'remove', text: '  // TODO: Add authentication' },
-              { type: 'add', text: '  const token = req.headers.authorization;' },
-              { type: 'add', text: '  if (!token) return res.status(401).json({ error: "Unauthorized" });' },
-              { type: 'context', text: '  const user = await verifyToken(token);' },
-              { type: 'add', text: '  req.user = user;' },
-              { type: 'add', text: '  next();' },
+              { type: 'remove', text: '  // TODO: Add user routes' },
+              { type: 'add', text: '  router.get("/users", listUsers);' },
+              { type: 'add', text: '  router.get("/users/:id", getUser);' },
+              { type: 'add', text: '  router.post("/users", createUser);' },
+              { type: 'context', text: '  export default router;' },
             ].map((line, i) => (
               <div
                 key={i}
                 style={{
                   fontFamily: FONT.mono,
-                  fontSize: 11,
-                  lineHeight: '20px',
-                  color:
-                    line.type === 'add'
-                      ? C.diffAdd
-                      : line.type === 'remove'
-                      ? C.diffRemove
-                      : 'rgba(255,255,255,0.4)',
-                  backgroundColor:
-                    line.type === 'add'
-                      ? C.diffAddBg
-                      : line.type === 'remove'
-                      ? C.diffRemoveBg
-                      : 'transparent',
+                  fontSize: 10,
+                  lineHeight: '18px',
+                  color: line.type === 'add' ? C.diffAdd : line.type === 'remove' ? C.diffRemove : C.textTertiary,
+                  backgroundColor: line.type === 'add' ? C.diffAddBg : line.type === 'remove' ? C.diffRemoveBg : 'transparent',
                   paddingLeft: 8,
                 }}
               >
-                {line.type === 'add' ? '+ ' : line.type === 'remove' ? '− ' : '  '}
-                {line.text}
+                {line.type === 'add' ? '+ ' : line.type === 'remove' ? '− ' : '  '}{line.text}
               </div>
             ))}
           </div>

@@ -34,7 +34,7 @@ export const FeatureCard: React.FC<FeatureCardProps> = ({
         backgroundColor: C.cardBg,
         borderRadius: 16,
         border: `1px solid ${C.cardBorder}`,
-        boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
+        boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
         opacity: Math.min(progress * 1.5, 1),
         transform: `translateY(${(1 - Math.min(progress, 1)) * 30}px)`,
         ...style,
@@ -45,7 +45,7 @@ export const FeatureCard: React.FC<FeatureCardProps> = ({
         style={{
           fontSize: 20,
           fontWeight: 600,
-          fontFamily: FONT.ui,
+          fontFamily: FONT.display,
           color: C.text,
           marginBottom: 8,
         }}
@@ -55,8 +55,8 @@ export const FeatureCard: React.FC<FeatureCardProps> = ({
       <div
         style={{
           fontSize: 14,
-          fontFamily: FONT.ui,
-          color: C.textMuted,
+          fontFamily: FONT.body,
+          color: C.textSecondary,
           lineHeight: 1.5,
         }}
       >

@@ -6,7 +6,6 @@ import {
   useVideoConfig,
   interpolate,
 } from 'remotion';
-import { ParticleField } from '../components/ParticleField';
 import { C, FONT, SPRING } from '../theme/constants';
 
 export const S10_EndCard: React.FC = () => {
@@ -42,8 +41,6 @@ export const S10_EndCard: React.FC = () => {
         gap: 24,
       }}
     >
-      <ParticleField count={20} color="rgba(79,70,229,0.12)" />
-
       {/* Logo */}
       <div
         style={{
@@ -60,11 +57,11 @@ export const S10_EndCard: React.FC = () => {
             width: 64,
             height: 64,
             borderRadius: 16,
-            background: `linear-gradient(135deg, ${C.accent}, ${C.accentLight})`,
+            background: `linear-gradient(135deg, ${C.accent}, #0A84FF)`,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: `0 6px 30px ${C.accent}33`,
+            boxShadow: `0 6px 30px ${C.accentGlow}`,
           }}
         >
           <span
@@ -72,7 +69,7 @@ export const S10_EndCard: React.FC = () => {
               fontSize: 36,
               fontWeight: 700,
               color: '#FFF',
-              fontFamily: FONT.ui,
+              fontFamily: FONT.display,
             }}
           >
             S
@@ -82,9 +79,9 @@ export const S10_EndCard: React.FC = () => {
           style={{
             fontSize: 56,
             fontWeight: 700,
-            fontFamily: FONT.ui,
+            fontFamily: FONT.display,
             color: C.text,
-            letterSpacing: -1,
+            letterSpacing: '-0.02em',
           }}
         >
           Symphonic
@@ -105,9 +102,9 @@ export const S10_EndCard: React.FC = () => {
             fontSize: 20,
             color: C.accent,
             padding: '8px 24px',
-            backgroundColor: `${C.accent}0A`,
+            backgroundColor: `${C.accent}08`,
             borderRadius: 8,
-            border: `1px solid ${C.accent}20`,
+            border: `1px solid ${C.accent}18`,
           }}
         >
           github.com/symphonic
@@ -117,9 +114,9 @@ export const S10_EndCard: React.FC = () => {
       {/* Tagline */}
       <div
         style={{
-          fontFamily: FONT.ui,
+          fontFamily: FONT.body,
           fontSize: 18,
-          color: C.textMuted,
+          color: C.textSecondary,
           zIndex: 1,
           opacity: Math.min(urlProgress * 1.5, 1),
         }}

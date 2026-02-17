@@ -1,72 +1,107 @@
 import React from 'react';
-import { AbsoluteFill, useCurrentFrame, spring, useVideoConfig } from 'remotion';
+import {
+  AbsoluteFill,
+  useCurrentFrame,
+  spring,
+  useVideoConfig,
+} from 'remotion';
 import { C, FONT, SPRING } from '../theme/constants';
 
 const painPoints = [
-  'Agents overwrite each other when they touch the same files',
-  'Switching between Codex, Claude Code, and other agents is painful',
-  'No single view of what each agent is building',
+  { icon: '🔀', word: 'Conflicts', detail: 'Two agents, one branch. Constant rebasing.' },
+  { icon: '🪟', word: 'Chaos', detail: 'A terminal per agent. No unified view.' },
+  { icon: '🔍', word: 'Blindness', detail: 'Which agent changed what? No idea.' },
 ];
 
 export const S02_Problem: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
+  const titleProgress = spring({ frame: frame - 5, fps, config: SPRING.slow });
+
   return (
     <AbsoluteFill
       style={{
-        backgroundColor: C.bgDark,
+        backgroundColor: C.bg,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 36,
-        padding: 120,
+        gap: 80,
       }}
     >
-      {painPoints.map((point, i) => {
-        const delay = i * 25;
-        const progress = spring({
-          frame: frame - delay,
-          fps,
-          config: SPRING.snappy,
-        });
+      {/* Title */}
+      <div
+        style={{
+          fontSize: 24,
+          fontWeight: 500,
+          fontFamily: FONT.body,
+          color: C.textSecondary,
+          letterSpacing: '0.08em',
+          textTransform: 'uppercase',
+          opacity: Math.min(titleProgress * 2, 1),
+        }}
+      >
+        The problem today
+      </div>
 
-        return (
-          <div
-            key={i}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 20,
-              opacity: Math.min(progress * 1.5, 1),
-              transform: `translateX(${(1 - Math.min(progress, 1)) * -60}px)`,
-            }}
-          >
+      {/* Three pillars */}
+      <div
+        style={{
+          display: 'flex',
+          gap: 100,
+          alignItems: 'flex-start',
+        }}
+      >
+        {painPoints.map((point, i) => {
+          const delay = 20 + i * 20;
+          const progress = spring({
+            frame: frame - delay,
+            fps,
+            config: SPRING.gentle,
+          });
+
+          return (
             <div
+              key={i}
               style={{
-                width: 10,
-                height: 10,
-                borderRadius: '50%',
-                backgroundColor: C.statusError,
-                flexShrink: 0,
-                boxShadow: `0 0 12px ${C.statusError}66`,
-              }}
-            />
-            <span
-              style={{
-                fontFamily: FONT.ui,
-                fontSize: 30,
-                color: C.textOnDark,
-                fontWeight: 400,
-                lineHeight: 1.4,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 20,
+                width: 320,
+                opacity: Math.min(progress * 1.5, 1),
+                transform: `translateY(${(1 - Math.min(progress, 1)) * 40}px)`,
               }}
             >
-              {point}
-            </span>
-          </div>
-        );
-      })}
+              <div style={{ fontSize: 48 }}>{point.icon}</div>
+              <div
+                style={{
+                  fontSize: 40,
+                  fontWeight: 700,
+                  fontFamily: FONT.display,
+                  color: C.text,
+                  letterSpacing: '-0.02em',
+                }}
+              >
+                {point.word}
+              </div>
+              <div
+                style={{
+                  fontSize: 18,
+                  fontWeight: 400,
+                  fontFamily: FONT.body,
+                  color: C.textSecondary,
+                  textAlign: 'center',
+                  lineHeight: 1.5,
+                }}
+              >
+                {point.detail}
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </AbsoluteFill>
   );
 };
