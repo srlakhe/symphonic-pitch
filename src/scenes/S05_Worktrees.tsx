@@ -109,7 +109,7 @@ export const S05_Worktrees: React.FC = () => {
             opacity: Math.min(titleProgress * 2, 1),
           }}
         >
-          Isolation
+          Parallel by default
         </div>
         <div
           style={{
@@ -123,7 +123,7 @@ export const S05_Worktrees: React.FC = () => {
             transform: `translateY(${(1 - Math.min(headingProgress, 1)) * 20}px)`,
           }}
         >
-          Each agent gets its own worktree.
+          Every agent works in its own space.
         </div>
         <div
           style={{
@@ -135,7 +135,7 @@ export const S05_Worktrees: React.FC = () => {
             opacity: Math.min(headingProgress * 1.2, 1),
           }}
         >
-          No conflicts. No locks. Full git history. Agents work on separate branches in parallel.
+          Isolated environments. No stepping on each other. Results merged automatically.
         </div>
       </div>
     </AbsoluteFill>

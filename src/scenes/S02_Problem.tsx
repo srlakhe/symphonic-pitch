@@ -8,9 +8,9 @@ import {
 import { C, FONT, SPRING } from '../theme/constants';
 
 const painPoints = [
-  { icon: '🔀', word: 'Conflicts', detail: 'Two agents, one branch. Constant rebasing.' },
-  { icon: '🪟', word: 'Chaos', detail: 'A terminal per agent. No unified view.' },
-  { icon: '🔍', word: 'Blindness', detail: 'Which agent changed what? No idea.' },
+  { icon: '🐌', word: 'One at a time', detail: 'You run one agent, wait, then start the next.' },
+  { icon: '🪟', word: 'Scattered', detail: 'A terminal per agent. No unified view.' },
+  { icon: '🔍', word: 'No visibility', detail: 'What did each agent actually do? Hard to tell.' },
 ];
 
 export const S02_Problem: React.FC = () => {

@@ -145,51 +145,38 @@ export const S08_Montage: React.FC = () => {
         />
       </div>
 
-      {/* Stats counter */}
+      {/* Big statement */}
       <div
         style={{
           display: 'flex',
-          gap: 60,
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 12,
           opacity: counterProgress,
           transform: `translateY(${(1 - counterProgress) * 20}px)`,
         }}
       >
-        {[
-          { value: '3', label: 'agents' },
-          { value: '3', label: 'features' },
-          { value: '1', label: 'PR' },
-        ].map((stat, i) => (
-          <div
-            key={i}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: 4,
-            }}
-          >
-            <span
-              style={{
-                fontFamily: FONT.display,
-                fontSize: 56,
-                fontWeight: 700,
-                color: C.accent,
-              }}
-            >
-              {stat.value}
-            </span>
-            <span
-              style={{
-                fontFamily: FONT.body,
-                fontSize: 16,
-                color: C.textSecondary,
-                fontWeight: 500,
-              }}
-            >
-              {stat.label}
-            </span>
-          </div>
-        ))}
+        <span
+          style={{
+            fontFamily: FONT.display,
+            fontSize: 44,
+            fontWeight: 700,
+            color: C.text,
+            letterSpacing: '-0.03em',
+          }}
+        >
+          One agent per feature.
+        </span>
+        <span
+          style={{
+            fontFamily: FONT.body,
+            fontSize: 22,
+            color: C.textSecondary,
+            fontWeight: 400,
+          }}
+        >
+          Ship as many as you want, in parallel.
+        </span>
       </div>
     </AbsoluteFill>
   );
